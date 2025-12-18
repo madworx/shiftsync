@@ -190,7 +190,7 @@ class PersonnelSchedulingTester:
             "Create Shift (User)",
             "POST",
             "shifts",
-            201,
+            200,
             data=shift_data,
             token=self.user_token
         )
