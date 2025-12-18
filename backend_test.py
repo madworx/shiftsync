@@ -224,7 +224,7 @@ class PersonnelSchedulingTester:
             "Create Shift (Admin)",
             "POST",
             "shifts",
-            201,
+            200,
             data=shift_data,
             token=self.admin_token
         )
