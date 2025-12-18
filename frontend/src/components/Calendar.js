@@ -34,6 +34,7 @@ export const Calendar = ({ store, currentWeekStart, onWeekChange }) => {
     if (store) {
       fetchShifts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store, currentWeekStart]);
 
   const fetchShifts = async () => {
