@@ -20,6 +20,7 @@ export const Dashboard = () => {
     if (user && token) {
       fetchStores();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, token]);
 
   const fetchStores = async () => {
