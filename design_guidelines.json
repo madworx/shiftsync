@@ -1,0 +1,120 @@
+{
+  "identity": {
+    "name": "E1",
+    "role": "Anti-AI Designer",
+    "mission": "Create a personnel scheduling system that feels like a Swiss control room—precise, high-contrast, and functionally beautiful.",
+    "principles": [
+      "Fusion over Imitation: Mix Swiss Poster aesthetics with SaaS utility.",
+      "Emotion First: Scheduling is stressful; the UI must be calm and authoritative.",
+      "Content is King: The schedule IS the hero. No decorative fluff.",
+      "Zoom In: Focus on the shift details.",
+      "Negative Space: Use whitespace to separate days and shifts."
+    ]
+  },
+  "design_system": {
+    "theme": "Swiss Utility (Light Mode Focus)",
+    "typography": {
+      "headings": {
+        "family": "Chivo, sans-serif",
+        "url": "https://fonts.googleapis.com/css2?family=Chivo:wght@300;400;700;900&display=swap",
+        "usage": "Use for all page titles, modal headers, and date displays. Weight: 700 or 900 for impact."
+      },
+      "body": {
+        "family": "IBM Plex Sans, sans-serif",
+        "url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap",
+        "usage": "Use for all grid content, shift details, and form inputs. Excellent legibility at small sizes."
+      },
+      "mono": {
+        "family": "JetBrains Mono, monospace",
+        "url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap",
+        "usage": "Use for time slots (e.g., '09:00 - 17:00') and ID numbers."
+      }
+    },
+    "colors": {
+      "palette": {
+        "primary": "220 10% 10%", 
+        "primary_foreground": "0 0% 100%",
+        "secondary": "220 10% 96%",
+        "secondary_foreground": "220 10% 10%",
+        "accent": "25 95% 53%", 
+        "accent_foreground": "0 0% 100%",
+        "background": "0 0% 100%",
+        "foreground": "220 10% 10%",
+        "muted": "220 10% 96%",
+        "muted_foreground": "220 10% 40%",
+        "border": "220 10% 90%",
+        "input": "220 10% 90%",
+        "ring": "220 10% 10%"
+      },
+      "semantic": {
+        "shift_morning": "bg-orange-100 text-orange-900 border-l-4 border-orange-500",
+        "shift_evening": "bg-blue-100 text-blue-900 border-l-4 border-blue-500",
+        "shift_night": "bg-purple-100 text-purple-900 border-l-4 border-purple-500",
+        "conflict": "bg-red-50 text-red-900 border border-red-200"
+      }
+    },
+    "spacing": {
+      "container_padding": "p-8 md:p-12",
+      "grid_gap": "gap-6",
+      "component_padding": "p-6"
+    },
+    "radius": {
+      "default": "0px",
+      "buttons": "9999px",
+      "inputs": "4px"
+    },
+    "shadows": {
+      "card": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      "modal": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+    }
+  },
+  "components": {
+    "calendar": {
+      "type": "CSS Grid",
+      "structure": "grid-cols-8 (1 col for time labels, 7 cols for days)",
+      "header": "Sticky top row with day names",
+      "cell": "Min-height 120px, border-r border-b border-border/50",
+      "interaction": "Drag and drop enabled using @dnd-kit or framer-motion reorder"
+    },
+    "shift_card": {
+      "style": "Ticket style. White background, subtle shadow, colored left border indicating shift type.",
+      "content": "Time (Mono font), User Avatar, Role (Badge)",
+      "hover": "Scale 1.02, Shadow-lg"
+    },
+    "buttons": {
+      "primary": "bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-6 rounded-full font-medium transition-transform active:scale-95",
+      "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-6 rounded-full font-medium"
+    },
+    "inputs": {
+      "style": "bg-transparent border-b-2 border-border focus:border-primary focus:outline-none rounded-none px-0 py-2 transition-colors"
+    }
+  },
+  "assets": {
+    "images": {
+      "store_1": "https://images.unsplash.com/photo-1703978917919-200c8afbc678?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "store_2": "https://images.unsplash.com/photo-1671572626938-4258ebf0971a?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "user_profile": "https://images.unsplash.com/photo-1575529346176-779fddc5c26e?crop=entropy&cs=srgb&fm=jpg&q=85"
+    },
+    "icons": "Use Lucide React. Stroke width: 1.5px for elegance."
+  },
+  "layout_strategies": {
+    "dashboard": "Sidebar navigation (left) + Main Content (right). Main content uses 'Control Room' grid.",
+    "login": "Split screen. Left: Branding/Art (Store Image with overlay). Right: Login Form (Clean, minimal).",
+    "modal": "Backdrop blur-sm. Modal content: White bg, sharp corners, generous padding."
+  },
+  "motion": {
+    "page_transition": "initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3, ease: 'easeOut' }}",
+    "hover_lift": "whileHover={{ y: -2 }}",
+    "drag_active": "scale-105 shadow-xl rotate-1 cursor-grabbing"
+  },
+  "universal_guidelines": [
+    "Do not use gradients for backgrounds. Use solid colors or subtle noise textures.",
+    "Ensure all text has sufficient contrast (APCA standards).",
+    "Use 'sonner' for all toast notifications.",
+    "All interactive elements must have data-testid attributes.",
+    "Do not use 'Inter' for headings. Use 'Chivo'.",
+    "Forms should feel like filling out a high-end manifest, not a tax document."
+  ],
+  "instructions_to_main_agent": "You are building a high-precision scheduling tool. Focus on the 'Calendar' component—it is the heart of the app. It must handle drag-and-drop smoothly. Use the provided image URLs for the store selection screen to give it a premium feel. Implement the 'Swiss Utility' theme by strictly adhering to the color palette and typography rules."
+}
