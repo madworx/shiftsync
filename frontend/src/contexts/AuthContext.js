@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext(null);
@@ -10,43 +10,64 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Set a fallback timeout in case auth check hangs
-    const loadingRef = { current: loading };
-    const timeoutId = setTimeout(() => {
-      console.warn('Auth check timeout - forcing loading to false');
-      setLoading(false);
-      if (token) {
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem('token');
-      }
-    }, 8000);
+  const logout = useCallback(() => {
+    localStorage.removeItem('token');
+    setToken(null);
+    setUser(null);
+  }, []);
 
-    if (token) {
-      fetchUser();
-    } else {
+  const fetchUser = useCallback(async (authToken) => {
+    if (!authToken) {
       setLoading(false);
+      return;
     }
 
-    return () => clearTimeout(timeoutId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
-
-  const fetchUser = async () => {
     try {
       const response = await axios.get(`${API}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${authToken}` },
         timeout: 5000
       });
       setUser(response.data);
       setLoading(false);
     } catch (error) {
       console.error('Failed to fetch user:', error);
-      logout();
+      localStorage.removeItem('token');
+      setToken(null);
+      setUser(null);
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    
+    const init = async () => {
+      if (!token) {
+        if (mounted) setLoading(false);
+        return;
+      }
+
+      // Set timeout for hanging requests
+      const timeoutId = setTimeout(() => {
+        if (mounted) {
+          console.warn('Auth check timeout');
+          localStorage.removeItem('token');
+          setToken(null);
+          setUser(null);
+          setLoading(false);
+        }
+      }, 8000);
+
+      await fetchUser(token);
+      clearTimeout(timeoutId);
+    };
+
+    init();
+
+    return () => {
+      mounted = false;
+    };
+  }, [token, fetchUser]);
 
   const login = async (email, password) => {
     const response = await axios.post(`${API}/auth/login`, { email, password });
@@ -55,12 +76,6 @@ export const AuthProvider = ({ children }) => {
     setToken(newToken);
     setUser(userData);
     return userData;
-  };
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
-    setUser(null);
   };
 
   return (
