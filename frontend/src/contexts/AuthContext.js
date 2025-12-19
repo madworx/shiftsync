@@ -12,10 +12,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Set a fallback timeout in case auth check hangs
+    const loadingRef = { current: loading };
     const timeoutId = setTimeout(() => {
-      if (loading) {
-        console.warn('Auth check timeout - forcing loading to false');
-        setLoading(false);
+      console.warn('Auth check timeout - forcing loading to false');
+      setLoading(false);
+      if (token) {
+        setUser(null);
         setToken(null);
         localStorage.removeItem('token');
       }
