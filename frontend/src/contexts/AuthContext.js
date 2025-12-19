@@ -11,11 +11,23 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Set a fallback timeout in case auth check hangs
+    const timeoutId = setTimeout(() => {
+      if (loading) {
+        console.warn('Auth check timeout - forcing loading to false');
+        setLoading(false);
+        setToken(null);
+        localStorage.removeItem('token');
+      }
+    }, 8000);
+
     if (token) {
       fetchUser();
     } else {
       setLoading(false);
     }
+
+    return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
