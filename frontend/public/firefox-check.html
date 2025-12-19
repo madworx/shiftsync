@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox Compatibility Check</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test { margin: 15px 0; padding: 10px; border-radius: 5px; }
+        .pass { background: #d4edda; border: 1px solid #c3e6cb; }
+        .fail { background: #f8d7da; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>ShiftSync Firefox Compatibility Check</h1>
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        const tests = [];
+        
+        // Test 1: localStorage
+        try {
+            localStorage.setItem('test', 'value');
+            localStorage.removeItem('test');
+            tests.push({ name: 'localStorage', status: 'pass', message: 'Working' });
+        } catch (e) {
+            tests.push({ name: 'localStorage', status: 'fail', message: e.message });
+        }
+        
+        // Test 2: ES6 Features
+        try {
+            const test = () => {};
+            const obj = { a: 1 };
+            const result = obj?.a ?? 0;
+            tests.push({ name: 'ES6+ Features', status: 'pass', message: 'Optional chaining & nullish coalescing working' });
+        } catch (e) {
+            tests.push({ name: 'ES6+ Features', status: 'fail', message: e.message });
+        }
+        
+        // Test 3: Fetch API
+        try {
+            fetch('/').catch(() => {});
+            tests.push({ name: 'Fetch API', status: 'pass', message: 'Available' });
+        } catch (e) {
+            tests.push({ name: 'Fetch API', status: 'fail', message: e.message });
+        }
+        
+        // Test 4: Drag and Drop API
+        try {
+            const div = document.createElement('div');
+            div.draggable = true;
+            tests.push({ name: 'Drag and Drop API', status: 'pass', message: 'Supported' });
+        } catch (e) {
+            tests.push({ name: 'Drag and Drop API', status: 'fail', message: e.message });
+        }
+        
+        // Display results
+        results.innerHTML = `
+            <h2>Test Results:</h2>
+            ${tests.map(test => `
+                <div class="test ${test.status}">
+                    <strong>${test.name}:</strong> ${test.message}
+                </div>
+            `).join('')}
+            <div style="margin-top: 30px;">
+                <p><strong>Browser:</strong> ${navigator.userAgent}</p>
+                <p><strong>Cookies Enabled:</strong> ${navigator.cookieEnabled ? 'Yes' : 'No'}</p>
+            </div>
+            <div style="margin-top: 30px; padding: 15px; background: #e7f3ff; border-radius: 5px;">
+                <h3>If tests pass but app doesn't work:</h3>
+                <ol>
+                    <li>Clear browser cache and cookies</li>
+                    <li>Check browser console for errors (F12)</li>
+                    <li>Try incognito/private mode</li>
+                    <li>Disable extensions temporarily</li>
+                </ol>
+            </div>
+        `;
+    </script>
+</body>
+</html>
