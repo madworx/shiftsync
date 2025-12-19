@@ -22,13 +22,14 @@ export const AuthProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       const response = await axios.get(`${API}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        timeout: 5000
       });
       setUser(response.data);
+      setLoading(false);
     } catch (error) {
       console.error('Failed to fetch user:', error);
       logout();
-    } finally {
       setLoading(false);
     }
   };
